@@ -63,7 +63,7 @@ Return exactly 4 queries, one per line, no numbering, no explanation."""
 
     result = _invoke_llm_text(prompt)
     queries = [q.strip() for q in result.strip().splitlines() if q.strip()]
-    return queries[:4]
+    return queries[:6]
 
 def retrieval_agent(state: WorkflowState) -> dict:
     log.info(f"[RETRIEVAL AGENT] Starting for code_id={state['code_id']}")
@@ -85,18 +85,18 @@ def retrieval_agent(state: WorkflowState) -> dict:
 
     for query in all_queries:
         results = mcp_client.search_documents(query)
-        for item in results[:3]:
+        for item in results[:10]:
             if isinstance(item, dict) and "text" in item:
                 text = item["text"]
                 # Deduplicate by first 80 chars
-                key = text[:80]
+                key = text[:100]
                 if key not in seen_texts:
                     seen_texts.add(key)
                     context_parts.append(text)
-        if len(context_parts) >= 12:
+        if len(context_parts) >= 60:
             break
 
-    retrieved_context = "\n---\n".join(context_parts[:12])
+    retrieved_context = "\n---\n".join(context_parts[:60])
     log.info(f"[RETRIEVAL AGENT] Collected {len(context_parts)} unique context chunk(s) from {len(all_queries)} queries")
     return {"retrieved_context": retrieved_context}
 
@@ -122,13 +122,27 @@ RULES:
   inverted argument polarity, exceeded value ranges
 - Empty lines and comments are NEVER bugs
 - When uncertain, skip it
+Do NOT report generic syntax errors like:
+- missing semicolon
+- spacing issues
+- formatting problems
+
+Focus on:
+- API misuse
+- lifecycle errors (RDI_BEGIN / RDI_END)
+- parameter order issues
+- invalid SmartRDI function usage
+- measurement configuration errors
 - Each bug: 3-6 words max (e.g. "wrong unit uA not V", "inverted iClamp args", "vecEditMode must be VTT")
+
+-you should focus on the retrieved documents to find the bug instead of auto finding bugs
 
 Return ONLY JSON:
 {{
   "bug_lines": [2, 5],
   "bugs": ["wrong unit uA not V", "inverted lifecycle order"]
 }}
+
 
 bug_lines and bugs must have equal length.
 If no bugs: {{"bug_lines": [], "bugs": []}}"""
@@ -156,7 +170,7 @@ def reasoning_agent(state: WorkflowState) -> dict:
         extra_results = mcp_client.search_documents(f"constraints rules {code[:100]}")
         if extra_results:
             context = "\n".join(
-                item["text"] for item in extra_results[:5]
+                item["text"] for item in extra_results[:15]
                 if isinstance(item, dict) and "text" in item
             ).strip()
             log.info("[REASONING AGENT] Context enriched")

@@ -1,21 +1,21 @@
 code_id,bug_lines,bugs
-16,,No bug found
-32,"2, 4",L2: vForce with uA unit not V | L4: pin() in digCap() should be a string
-25,5,L5: RDI_END() outside RDI_BEGIN()
-10,2,L2: call outside RDI_BEGIN/RDI_END
-26,5,L5: wrong units for waveform repeat
-23,"8, 21, 29",L8: readBit() args order incorrect | L21: readData() args order incorrect | L29: getReadBit() argument should be pin name
-4,"2, 3",L2: wrong unit uA not V | L3: wrong units in iClamp()
-31,"2, 5",L2: wrong unit uA not V | L5: inverted lifecycle order
-17,8,L8: getFFC() used outside RDI_BEGIN/END
-27,5,L5: missing execute() call
-24,3,"L3: interS typo, should be interSkip"
-14,"7, 8",L7: getAlarmValue() not supported | L8: getAlarmBurstValue() not documented
-9,2,L2: wait() call outside RDI_BEGIN/END
-13,3,L3: missing getWaveform() call
-22,3,L3: readTempThresh() takes no parameters
-29,4,L4: retrievePmuxPinStatus() used outside RDI_BEGIN
-2,"2, 3",L2: wrong unit V not mV | L3: wrong unit uA not mA
-20,4,L4: wrong method name: rdi.digCap() should be rdi.digCap() with label or pin
-11,"2, 3",L2: wrong method iMeans() (should be iMeas()) | L3: wrong unit uA not mA
-3,"2, 3, 4",L2: wrong units in iClamp(-(-11 mA mA)) | L3: wrong units in vForceRange(8 V) | L4: execute() called outside RDI_BEGIN()/RDI_END()
+16,"2, 5, 11","L2: vecEditMode() should be called inside RDI_BEGIN()/RDI_END() | L5: label() should specify main label, not burst or subroutine | L11: writeData() argument order incorrect"
+32,,No bug found
+25,"2, 5",L2: wrong unit uA not V | L5: inverted lifecycle order
+10,"2, 4",L2: wrong method name readHumanSeniority() | L4: wrong argument in getHumanSeniority()
+26,10,L10: read() used instead of execute()
+23,24,L24: burstUpload() called outside RDI_BEGIN/END
+4,2,L2: wrong unit uA not V
+31,5,L5: push_forward() method does not exist
+17,,No bug found
+27,5,L5: missing execute() call for vPulse
+24,"3, 4",L3: initDiscard() call outside RDI_BEGIN | L4: RDI_END() missing after digCap()
+14,"3, 7",L3: wrong method name getAlarmValue() should be getAlarmBurstValue() | L7: wrong argument order in getAlarmValue()
+9,2,L2: wait() argument missing units
+13,3,L3: getVesjkctor() is invalid method name
+22,"3, 7",L3: wrong method name readTempThresh() used instead of getTempThresh() | L7: incorrect argument in getTempThresh() call
+29,4,L4: retrievePmuxPinStatus() used inside RDI_BEGIN/END
+2,"2, 5",L2: wrong unit uA not V | L5: inverted lifecycle order
+20,"1, 4",L1: digCapBurstSiteUpload() called outside RDI_BEGIN()/RDI_END() | L4: wrong method argument order in rdi.digCap()
+11,3,L3: wrong method name iMeans()
+3,"2, 5",L2: wrong unit uA not V | L5: inverted lifecycle order
