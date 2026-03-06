@@ -1,0 +1,179 @@
+code_id,code
+16,"rdi.smartVec().vecEditMode(TA::VECD);
+
+RDI_BEGIN();
+rdi.smartVec()
+    .label(""sLabel"").copyLabel(false).pin(A)
+    .writeData(""rt"", 8, 0)
+    .execute();
+
+rdi.smartVec()
+    .label(""sLabel"").copyLabel(false).pin(A)
+    .writeData(""rt"", 8, 8)
+    .execute(); // 
+RDI_END();"
+
+32,"RDI_BEGIN();
+rdi.port(""pt1"").dc().pin(""dig2"").vForce(1 uA).burst();
+rdi.port(TA::MULTI_PORT).func().burst(""MPBurst2"").burst(); // n
+rdi.port(""pt2"").digCap().pin(""dig1"").samples(8).execute();
+rdi.port(TA::MULTI_PORT).func().burst(""MPBurst1"").burst();
+RDI_END();"
+
+25,"ARRAY_I write_data(2);
+write_data[0]=0x1;
+write_data[1]=0x2;
+rdi.runTimeVal(""data"",write_data);
+RDI_END();
+rdi.protocol().pname(""i2c"").write(0x4,""data"").execute();
+RDI_BEGIN();"
+
+10,"RDI_BEGIN();
+rdi.pmux(4).module(""02"").readHumanSeniority().execute();
+RDI_END();
+int hum = rdi.id(4).getHumanSeniority(""02"");"
+
+26,"anaWaveform wav1(""wav1""), wav2(""wav2""), wav3(""wav3"");
+RDI_BEGIN();
+rdi.dc().pin(""Pin1"").vForce().waveform(wav1)
+  .addWaveform(wav2)
+  .addWaveform(wav3, 2)
+  .FS(250 /* kHz */).execute();
+rdi.dc().pin(""Pin2"").vForce().waveform(wav1).repeat(2)
+  .iMeas()
+  .addWaveform(wav2, 3)
+  .FS(250 /* kHz */).read();
+RDI_END();"
+
+23,"ON_FIRST_INVOCATION_BEGIN();
+
+rdi.smartVec().readMode(TA::EMAP);
+
+RDI_BEGIN();
+rdi.smartVec(""id"").burstUpload().begin();
+
+rdi.smartVec(id1)
+    .pin(""DATA2"").readBit(2, 2)
+    .execute();
+
+rdi.smartVec(id2)
+    .pin(""DATA2"").readBit(4, 4)
+    .execute();
+
+rdi.smartVec(id3)
+    .pin(""DATA4"").readData(8, 8)
+    .execute();
+
+rdi.smartVec(id4)
+    .pin(""DATA4"").readData(8, 12)
+    .execute();
+
+rdi.burstUpload.smartVec().end();
+RDI_END();
+
+ON_FIRST_INVOCATION_END();
+
+ARRAY_I bitResult = rdi.id(""id"").getReadBit(""DATA2"");
+ARRAY_LL dataResult = rdi.id(""id"").getReadData(""DATA4"");"
+
+4,"rdi.alarm().pin(m_rMcd.sP_VS).enable(true);
+rdi.dc().pin(m_rMcd.sP_VS).vForce(31 V).vForceRange(30 V).iForceRange(50 mA).iClamp(50 mA, -50 mA)
+        .pin(m_rMcd.sP_LIN).vForce(13.5 V).vForceRange(30 V).iForceRange(5 uA).iClamp(-5 uA, 5 uA)
+        .execute();
+rdi.wait(1 ms);"
+
+31,"vector<string> vec_port1;
+vec_port1.burst();
+vec_port1.push_back(""label3"");
+vec_port2.push_back(""label7"");
+vec_port1.push_forward(""label25"");
+vec_port2.push_forward(""label31"");
+rdi.runTimeVal(""rt"",vec_port2);
+RDI_BEGIN();
+rdi.port(""A"").func(""idd"").burstRunTime(""rt"",200).execute();
+RDI_END();
+ARRAY_I ary = rdi.id(""idd"").getMultiPassFail();"
+
+17,"RDI_BEGIN();
+rdi.emap(""a"")
+    .label(""label2"").pin(""pB"")
+    .FFV(10)
+    .execute();
+RDI_END();
+
+int iffv = rdi.id(""a"").getFFC();"
+
+27,"RDI_BEGIN();
+rdi.dc().pin(""DPS_1,DPS_2"").imeasRange(100 uA);
+rdi.dc().pin(""DPS_1,DPS_2"").vForce(0.01 V);
+rdi.wait(3 ms);
+rdi.dc(""im1"").pin(""DPS_0,DPS_1"").imeas().write();
+RDI_END();"
+
+24,"ON_FIRST_INVOCATION_BEGIN();
+RDI_BEGIN();
+rdi.digCap(""cap"").pin(""D0"").samples(100).initDiscard(10).interS;
+RDI_END();
+ON_FIRST_INVOCATION_END();
+const ARRAY_I& aiData = rdi.id(""cap"").getVector(""DO"");"
+
+14,"RDI_BEGIN();
+...
+rdi.dc(""a"").pin(""dig"").iForce(0).vMeas().execute();
+...
+RDI_END();
+
+double dVal = rdi.id(""a"").getAlarmValue();
+ARRAY_D aryVal = rdi.id(""a"").getAlarmBurstValue(""AVI"");"
+
+9,"rdi.cogo().node(""this"").passNode(""id1"").failNode(""id2"").begin();
+rdi.cogo().wait(100 us);
+rdi.cogo().end().end();"
+
+13,"SMC_BackgroundProcessing()
+{
+rdi.id(""cap"").getVesjkctor();
+rdi.id(""idd"").getVslkhalue();
+rdi.id(""dgr"").getWlkjnaveform();
+}"
+
+22,"RDI_BEGIN();
+rdi.pmux(1)
+    .module(""02"").readTempThresh(70)
+    .execute();
+RDI_END();
+
+int tempTh = rdi.id(1).getTempThresh(""02"");"
+
+29,"RDI_BEGIN();
+rdi.route().pin(""P0x01F1"").setOff().execute();
+rdi.route().pin(""P0x07F1"").setOn().execute();
+rdi.route().retrievePmuxPinStatus(""P0x01F1"");
+rdi.route().retrievePmuxPinStatus(""P0x07F1"");
+rdi.route().retrievePmuxPinStatus(""P0x08F1"");
+RDI_END();"
+
+2,"rdi.alarm().pin(m_rMcd.sP_VS).enable(true);
+rdi.dc().pin(m_rMcd.sP_VS).vForce(13.5 V).vForceRange(35 V).iForceRange(50 mA).iClamp(-50 mA, 50 mA)
+        .pin(m_rMcd.sP_LIN).vForce(13.5 V).vForceRange(30 V).iForceRange(5 uA).iClamp(-5 uA, 5 uA)
+        .execute();
+rdi.wait(1 ms);"
+
+20,"rdi.digCapBurstSiteUpload(false);
+
+RDI_BEGIN();
+rdi.digCap(1)
+    .pin(""DATA1"").samples(9216)
+    .execute();
+RDI_END();"
+
+11,"RDI_BEGIN();
+rdi.dc().pin(""dig1"").vForce(1).iMeans().iRange(2 mAh).execute();
+rdi.dc().pin(""dig2"").iForce(1 uA).vMeans().execute();
+RDI_END();"
+
+3,"rdi.alarm().pin(m_rMcd.sP_VS).enable(true);
+rdi.dc().pin(m_rMcd.sP_VS).vForce(31 V).vForceRange(30 V).iForceRange(50 mA).iClamp(-50 mA, 50 mA)
+        .pin(m_rMcd.sP_LIN).vForce(13.5 V).vForceRange(30 V).iForceRange(5 uA).iClamp(-5 uA, 5 uA)
+        .execute();
+rdi.wait(1 ms);"

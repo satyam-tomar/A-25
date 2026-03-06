@@ -1,0 +1,8 @@
+.vscode
+__pycache__
+.env
+env
+node_modules
+venv
+
+server
